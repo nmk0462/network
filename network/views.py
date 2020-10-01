@@ -1,7 +1,8 @@
 import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect,JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -171,6 +172,7 @@ def followingposts(request):
 @csrf_exempt
 @login_required
 def followapi(request,name):
+    following = 0
     try:
         if User.objects.get(username=name) :
             try:
@@ -294,7 +296,7 @@ def register(request):
                 "message": "Passwords must match."
             })
 
-        # Attempt to create new user
+        # Creating a new user
         try:
             user = User.objects.create_user(username, email, password)
             user.save()
